@@ -20,6 +20,10 @@ h1 {
         color: #4c0024;
 }
 
+h2, h3 {
+        color: #303941;
+}
+
 img {
         height: 400px;
         width: auto;
