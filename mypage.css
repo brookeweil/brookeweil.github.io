@@ -1,18 +1,27 @@
 body {
         font-family: Futura, "Trebuchet MS", Arial, sans-serif;
-        background-color: #b0c2f0;
+        background-color: #dde0ec;
+        color: #635f68;
 }
 
-/*
-        Below:
-        h1 {...} lines 14 to 18 is one CSS rule;
-        h1 => selector
-        Line 18: "font-size: 96px;" => one declaration
-        One declaration => key-value (or attribute-value) pair separated by colon
-*/
+a {
+        text-decoration: none;
+        color: #000066;
+}
+
+a:hover {
+    color: #4c0024;
+}
+
 
 h1 {
-        text-align: center;
-        font-size: 96px;
-        color: #cc33ff;
+        text-align: left;
+        font-size: 48px;
+        color: #4c0024;
+}
+
+img {
+        height: 400px;
+        width: auto;
+
 }
