@@ -239,7 +239,9 @@ a:hover, a:focus {
     background-size: cover;
 }
 
-
+#name-banner h1 {
+    font-size: 90vmin;
+}
 
 
 /* Gallery */
