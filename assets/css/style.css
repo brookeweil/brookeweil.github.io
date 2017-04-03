@@ -174,7 +174,8 @@ a:hover, a:focus {
 
 #footerwrap p {
 	color: #f2f2f2;
-	margin-left: 10px;
+    margin-left: 10px;
+	margin-right: 10px;
 }
 
 #footerwrap a:hover {
