@@ -239,8 +239,9 @@ a:hover, a:focus {
     background-size: cover;
 }
 
-#name-banner h1 {
-    font-size: 90vmin;
+#name-banner h1  {
+    color: orange;
+    font-size: 200pt;
 }
 
 
