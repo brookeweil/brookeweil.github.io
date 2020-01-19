@@ -4,7 +4,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "cp -r app/build/* ."
+      "pre-commit": "cd app; yarn build; cd ..; cp -r app/build/* ."
     }
   }
 }
