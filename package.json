@@ -4,7 +4,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "cd app; yarn build; cd ..; cp app/build/* ./*"
+      "pre-push": "cd app; yarn build"
     }
   }
 }
