@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "husky": "^4.0.10"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "cd app; yarn build; cd ..; cp app/build/* ./*"
+    }
+  }
+}

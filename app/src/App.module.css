@@ -1,0 +1,40 @@
+.homepage {
+  position: relative;
+  display: flex;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+.overlay {
+  z-index: 2;
+}
+.title {
+  max-width: 500px;
+  text-align: left;
+}
+.subtitle {
+  text-align: left;
+}
+.portrait {
+  max-width: 600px;
+}
+
+@media only screen and (max-width: 640px) {
+  .overlay {
+    composes: overlay;
+    margin-left: 20px;
+  }
+  .overlay h1 {
+    font-size: 72px;
+    margin-top: 250px;
+  }
+  .overlay a {
+    color: var(--light-gray);
+  }
+  .portrait {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+  }
+}
