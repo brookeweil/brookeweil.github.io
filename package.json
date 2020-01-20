@@ -1,10 +1,13 @@
 {
+  "scripts": {
+    "dist": "cd app; yarn build; cd ..; cp -r app/build/* ."
+  },
   "devDependencies": {
     "husky": "^4.0.10"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "cd app; yarn build; cd ..; cp -r app/build/* ."
+      "pre-commit": "yarn dist"
     }
   }
 }
