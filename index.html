@@ -1,1 +1,274 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/favicon.png"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#1cbc9c"/><meta name="description" content="Web site created using create-react-app"/><link rel="manifest" href="/manifest.json"/><title>Brooke Weil</title><link href="/static/css/main.f95a2401.chunk.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><script>!function(a){function e(e){for(var r,t,n=e[0],o=e[1],u=e[2],p=0,l=[];p<n.length;p++)t=n[p],Object.prototype.hasOwnProperty.call(i,t)&&i[t]&&l.push(i[t][0]),i[t]=0;for(r in o)Object.prototype.hasOwnProperty.call(o,r)&&(a[r]=o[r]);for(s&&s(e);l.length;)l.shift()();return c.push.apply(c,u||[]),f()}function f(){for(var e,r=0;r<c.length;r++){for(var t=c[r],n=!0,o=1;o<t.length;o++){var u=t[o];0!==i[u]&&(n=!1)}n&&(c.splice(r--,1),e=p(p.s=t[0]))}return e}var t={},i={1:0},c=[];function p(e){if(t[e])return t[e].exports;var r=t[e]={i:e,l:!1,exports:{}};return a[e].call(r.exports,r,r.exports,p),r.l=!0,r.exports}p.m=a,p.c=t,p.d=function(e,r,t){p.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},p.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},p.t=function(r,e){if(1&e&&(r=p(r)),8&e)return r;if(4&e&&"object"==typeof r&&r&&r.__esModule)return r;var t=Object.create(null);if(p.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:r}),2&e&&"string"!=typeof r)for(var n in r)p.d(t,n,function(e){return r[e]}.bind(null,n));return t},p.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return p.d(r,"a",r),r},p.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},p.p="/";var r=this["webpackJsonpmy-app"]=this["webpackJsonpmy-app"]||[],n=r.push.bind(r);r.push=e,r=r.slice();for(var o=0;o<r.length;o++)e(r[o]);var s=n;f()}([])</script><script src="/static/js/2.99c963d8.chunk.js"></script><script src="/static/js/main.b36cfda7.chunk.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Word Ladder Game</title>
+	<style>
+	#instructionsModal { animation: fadein 0.5s; }
+	@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+		body { font-family: sans-serif; background: #f4f4f4; padding: 2em; }
+		#game { background: #fff; padding: 2em; border-radius: 8px; max-width: 400px; margin: auto; box-shadow: 0 2px 8px #ccc; }
+		input[type="text"] { font-size: 1.2em; width: 80px; text-align: center; }
+		button { font-size: 1em; margin-left: 1em; }
+		#history { margin-top: 1em; }
+		.word { display: inline-block; margin: 0 0.5em; font-weight: bold; }
+		.tile {
+			display: inline-block;
+			width: 40px;
+			height: 40px;
+			line-height: 40px;
+			margin: 0 4px;
+			background: #f9e79f;
+			border: 2px solid #b7950b;
+			border-radius: 6px;
+			font-size: 1.5em;
+			font-weight: bold;
+			text-align: center;
+			cursor: pointer;
+			user-select: none;
+			transition: background 0.2s;
+		}
+		.tile:hover {
+			background: #f7ca18;
+		}
+		#message { margin-top: 1em; color: #b00; font-size: 1.2em; font-weight: bold; }
+		#message.win {
+			color: #1ca81c !important;
+			font-size: 1.5em;
+			text-shadow: 0 0 8px #b6ffb6, 0 0 2px #1ca81c;
+			animation: popwin 0.5s;
+		}
+		@keyframes popwin {
+			0% { transform: scale(1); }
+			60% { transform: scale(1.2); }
+			100% { transform: scale(1); }
+		}
+	</style>
+</head>
+<body>
+		<div id="instructionsModal" style="
+				position: fixed;
+				top: 0; left: 0; width: 100vw; height: 100vh;
+				background: rgba(0,0,0,0.5);
+				display: flex; align-items: center; justify-content: center;
+				z-index: 10000;">
+			<div style="background: #fff; padding: 2em 2.5em; border-radius: 12px; max-width: 400px; box-shadow: 0 4px 24px #0002; text-align: center;">
+				<h2 style="margin-top:0">How to Play</h2>
+				<ol style="text-align:left; margin: 1em 0 1.5em 1.2em;">
+					<li>You start with a 4-letter word (e.g. <b>FORK</b>).</li>
+					<li>Your goal is to reach the target word (e.g. <b>TUCK</b>).</li>
+					<li>Click a letter to change it. Only one letter can change at a time.</li>
+					<li>Each step must be a valid English word.</li>
+					<li>Try to reach the target in as few moves as possible!</li>
+				</ol>
+				<button id="closeInstructions" style="font-size:1.1em; padding:0.5em 1.5em; border-radius:6px; background:#1ca81c; color:#fff; border:none; cursor:pointer;">Start Game</button>
+			</div>
+		</div>
+		<div id="game">
+					<h2>Word Ladder: FORK → TUCK</h2>
+					<div>Current word: <span id="currentWordTiles"></span></div>
+					<form id="moveForm" autocomplete="off" style="display:none"></form>
+					<div id="message"></div>
+					<div id="history"></div>
+					<div style="text-align:center; margin-top:1.5em;">
+						<button id="resetBtn" style="font-size:1em; padding:0.4em 2em; border-radius:6px; background:#eee; border:1px solid #bbb; cursor:pointer;">Reset</button>
+					</div>
+		</div>
+	<script>
+		// Reset button handler
+		document.addEventListener('DOMContentLoaded', function() {
+			const resetBtn = document.getElementById('resetBtn');
+			if (resetBtn) {
+				resetBtn.onclick = function() {
+					currentWord = startWord;
+					history = [startWord];
+					updateUI("");
+				};
+			}
+		});
+		// Show instructions modal on load
+		window.addEventListener('DOMContentLoaded', function() {
+			const modal = document.getElementById('instructionsModal');
+			const btn = document.getElementById('closeInstructions');
+			btn.onclick = function() {
+				modal.style.display = 'none';
+			};
+		});
+	// A comprehensive list of 4-letter English words (public domain, SOWPODS/ENABLE, truncated for brevity)
+	// For a full list, see: https://www-cs-faculty.stanford.edu/~knuth/sgb-words.txt or similar sources
+	const fourLetterWords = [
+        "ABLE","ACID","AGED","ALSO","AREA","ARMY","AWAY","BABY","BACK","BALL","BAND","BANK","BASE","BATH","BEAD","BEAK","BEAM","BEAN","BEAR","BEAT","BEEF","BEEN","BEER","BELL","BELT","BEND","BENT","BEST","BETA","BILL","BIND","BIRD","BITE","BLOW","BLUE","BOAT","BODY","BOLD","BOMB","BOND","BONE","BONG","BOOK","BOOM","BOOT","BORN","BOSS","BOTH","BOWL","BULK","BULL","BURN","BUSH","BUSY","BYTE","CAGE","CAKE","CALL","CALM","CAME","CAMP","CARD","CARE","CART","CASE","CASH","CAST","CAVE","CELL","CHAT","CHEF","CHIP","CITY","CLAW","CLAY","CLUB","COAL","COAT","CODE","COIN","COLD","COME","COOK","COOL","COPE","COPY","CORD","CORE","CORK","COST","CREW","CROP","CUBE","CULT","CURE","CURL","CURT","DARK","DATA","DATE","DAWN","DAYS","DEAD","DEAF","DEAL","DEAN","DEAR","DEBT","DECK","DEED","DEEM","DEEP","DEER","DIAL","DICE","DIED","DIET","DIME","DINE","DING","DIRE","DIRT","DISC","DISK","DISH","DIVE","DOCK","DOES","DOGS","DONE","DOOM","DOOR","DOSE","DOWN","DRAW","DREW","DROP","DRUG","DUAL","DUCK","DUCT","DUKE","DULL","DUMB","DUNE","DUNG","DUNK","DUSK","DUST","DUTY","EACH","EARL","EARN","EASE","EAST","EASY","ECHO","EDGE","EDIT","EGGS","ELSE","EMIT","ENDS","ENVY","EPIC","EVEN","EVER","EVIL","EXIT","FACE","FACT","FADE","FAIL","FAIN","FAIR","FAKE","FALL","FAME","FANG","FARM","FAST","FATE","FAWN","FEAR","FEAT","FEED","FEEL","FEET","FELL","FELT","FEND","FERN","FEST","FEUD","FIBS","FIFE","FILE","FILL","FILM","FIND","FINE","FINK","FIRE","FIRM","FISH","FIST","FIVE","FLAG","FLAP","FLAT","FLAW","FLEA","FLED","FLEW","FLIP","FLOG","FLOE","FLOG","FLOP","FLOW","FLUX","FOAM","FOIL","FOLD","FOLK","FOOD","FOOL","FOOT","FORD","FORE","FORK","FORM","FORT","FOUL","FOUR","FOWL","FRAU","FRET","FROG","FROM","FUEL","FULL","FUME","FUND","FUNK","FURY","FUSE","FUSS","GAIN","GALA","GALE","GALL","GAME","GANG","GAPE","GARB","GASH","GATE","GAZE","GEAR","GEEK","GELD","GEMS","GENE","GENT","GERM","GIFT","GILD","GILL","GILT","GIRL","GIST","GIVE","GLAD","GLEE","GLEN","GLIB","GLOW","GLUE","GLUM","GOAL","GOAT","GOES","GOLD","GOLF","GONE","GOOD","GOOF","GORE","GOWN","GRAB","GRAM","GRAY","GREW","GREY","GRID","GRIM","GRIN","GRIP","GRIT","GROW","GRUB","GULF","GULL","GUNK","GURU","GUSH","GUST","HAIR","HALF","HALL","HALO","HALT","HAND","HANG","HARD","HARE","HARK","HARM","HARP","HASH","HATE","HAUL","HAVE","HAWK","HEAD","HEAL","HEAP","HEAR","HEAT","HEED","HEEL","HEFT","HELD","HELL","HELP","HERB","HERD","HERE","HERO","HERS","HEWN","HIDE","HIGH","HIKE","HILL","HILT","HIND","HINT","HIRE","HISS","HIVE","HOAX","HOCK","HOLE","HOLY","HOME","HONE","HONK","HOOD","HOOF","HOOK","HOOT","HOPE","HORN","HOSE","HOST","HOUR","HOVE","HOWL","HUGE","HULA","HULL","HUMP","HUNG","HUNK","HUNT","HURL","HURT","HUSH","HYMN","ICON","IDEA","IDLE","IDOL","INCH","INFO","INTO","IONS","IRON","ISLE","ITCH","ITEM","JACK","JADE","JAIL","JAMB","JANE","JEAN","JEEP","JEER","JELL","JERK","JESS","JEST","JIBE","JILL","JILT","JIVE","JOAN","JOBS","JOCK","JOEY","JOHN","JOIN","JOKE","JOLT","JOSH","JOWL","JUDO","JUDY","JUJU","JUKE","JUMP","JUNK","JURY","JUST","KEEN","KEEP","KENT","KEPT","KERN","KICK","KILL","KIND","KING","KISS","KITE","KNEE","KNEW","KNIT","KNOB","KNOT","KNOW","KOOK","LACE","LACK","LADY","LAID","LAIN","LAKE","LAMB","LAME","LAND","LANE","LANK","LARD","LARK","LASS","LAST","LATE","LAUD","LAVA","LAWN","LAWS","LAYS","LEAD","LEAF","LEAK","LEAN","LEAP","LEAR","LEEK","LEFT","LEGS","LEND","LENS","LENT","LESS","LEST","LETS","LIAR","LICE","LICK","LIED","LIEN","LIES","LIFE","LIFT","LIKE","LILT","LILY","LIMB","LIME","LIMP","LINE","LINK","LINT","LION","LIPS","LIST","LIVE","LOAD","LOAF","LOAM","LOAN","LOCK","LOFT","LOGO","LOIN","LONG","LOOK","LOOM","LOON","LOOT","LORD","LORE","LOSE","LOSS","LOST","LOUD","LOVE","LUCK","LUMP","LUNG","LURE","LUSH","LUST","LYNX","MADE","MAGI","MAID","MAIL","MAIN","MAKE","MALE","MALL","MALT","MAMA","MANY","MARK","MARS","MART","MASH","MASK","MASS","MAST","MATE","MATH","MAUL","MAYO","MEAD","MEAL","MEAN","MEAT","MEET","MELD","MELT","MEMO","MENU","MERE","MESH","MESS","MICE","MIKE","MILD","MILE","MILK","MILL","MIME","MIND","MINE","MINI","MINK","MINT","MIRE","MISS","MIST","MOAN","MOAT","MOCK","MODE","MOLE","MOLL","MOLT","MONK","MOOD","MOON","MOOR","MOOT","MORE","MOSS","MOST","MOTH","MOVE","MUCH","MUCK","MUDD","MUFF","MULE","MULL","MUSE","MUSH","MUST","MUTE","MYTH","NAME","NAPE","NARY","NAVE","NAVY","NEAR","NEAT","NECK","NEED","NEON","NEST","NEWS","NEWT","NICE","NICK","NINE","NODE","NOEL","NOIR","NONE","NOOK","NOON","NOSE","NOTE","NOUN","NOVA","NUDE","NULL","OATH","OATS","OBEY","OBIT","ODDS","ODOR","OFFS","OGLE","OHMS","OILY","OINT","OKAY","OLDE","OLGA","OLIN","OMEN","OMIT","ONCE","ONES","ONLY","ONTO","ONUS","ONYX","OOZE","OPAL","OPEN","ORAL","ORCA","ORGY","OUCH","OURS","OUST","OUTS","OVAL","OVEN","OVER","OWED","OWES","OWLS","OWNS","PACE","PACK","PACT","PAGE","PAID","PAIL","PAIN","PAIR","PALE","PALM","PALS","PANE","PANG","PANS","PANT","PAPA","PARE","PARK","PART","PASS","PAST","PATH","PAVE","PAWN","PEAK","PEAL","PEAR","PEAS","PEAT","PECK","PEEL","PEEP","PEGS","PENS","PENT","PEON","PEPS","PERK","PERM","PERT","PEST","PETS","PHEW","PHIL","PHON","PICK","PIED","PIER","PIES","PIGS","PIKE","PILE","PILL","PINE","PING","PINK","PINS","PINT","PIPE","PIPS","PISA","PISH","PITY","PLAN","PLAY","PLEA","PLEB","PLOD","PLOT","PLOW","PLUG","PLUM","PLUS","POEM","POET","POKE","POLE","POLL","POLO","POND","PONE","PONG","PONY","POOF","POOH","POOL","POOP","POOR","POPE","POPP","PORK","PORT","POSE","POST","POUR","POUT","PRAY","PREP","PREY","PRIM","PROD","PROP","PROS","PRYI","PUBE","PUCK","PUFF","PUGS","PUKE","PULL","PULP","PUMA","PUMP","PUNK","PUNS","PUNT","PUNY","PUPA","PUPS","PURE","PURL","PUSH","PUTT","PYRE","QUAD","QUAY","QUEE","QUEL","QUEN","QUIP","QUIT","QUIZ","QUOD","RACE","RACK","RACY","RAFT","RAGE","RAID","RAIL","RAIN","RAKE","RAMP","RANG","RANK","RANT","RAPE","RAPS","RAPT","RARE","RASH","RATE","RAVE","RAYS","READ","REAL","REAM","REAP","REAR","RECK","REED","REEF","REEL","REIN","RELY","RENT","REST","RICE","RICH","RICK","RIDE","RIFT","RILL","RIME","RING","RINK","RIOT","RIPE","RISE","RISK","RITE","ROAD","ROAM","ROAR","ROBE","ROCK","RODE","ROIL","ROLL","ROMP","ROOF","ROOK","ROOM","ROOT","ROPE","ROSE","ROSS","ROSY","ROTE","ROTS","ROUT","ROVE","RUBY","RUDE","RUIN","RULE","RUNG","RUNS","RUNT","RUSE","RUSH","RUST","RUTH","SACK","SAFE","SAGE","SAID","SAIL","SAKE","SALE","SALT","SAME","SAND","SANE","SANG","SANK","SAPS","SASH","SATE","SAVE","SAYS","SCAN","SCAR","SCAT","SCOT","SEAL","SEAM","SEAR","SEAT","SEED","SEEK","SEEM","SEEN","SEEP","SEES","SELF","SELL","SEND","SENT","SETS","SEWN","SHAG","SHAM","SHED","SHIN","SHIP","SHOD","SHOE","SHOP","SHOT","SHOW","SHUN","SHUT","SICK","SIDE","SIFT","SIGN","SILL","SILO","SILT","SINE","SING","SINK","SIRE","SITE","SIZE","SKIM","SKIN","SKIP","SLAB","SLAM","SLAP","SLAT","SLAY","SLED","SLEW","SLID","SLIM","SLIT","SLOB","SLOG","SLOT","SLOW","SLUG","SLUM","SLUR","SMOG","SMUG","SNAG","SNAP","SNIP","SNIT","SNOB","SNOW","SNUB","SOAK","SOAP","SOAR","SOCK","SODA","SOFA","SOFT","SOIL","SOLD","SOLE","SOMA","SOME","SONG","SOON","SOOT","SORE","SORT","SOUL","SOUP","SOUR","SPAM","SPAN","SPAR","SPAS","SPAT","SPAW","SPAY","SPEC","SPEW","SPIN","SPIT","SPOT","SPRY","SPUD","SPUN","SPUR","STAB","STAG","STAN","STAR","STAY","STEM","STEP","STEW","STIR","STOP","STOW","STUB","STUN","SUCH","SUCK","SUED","SUIT","SULK","SUMO","SUMS","SUNG","SUNK","SURE","SURF","SWAB","SWAG","SWAM","SWAN","SWAP","SWAT","SWAY","SWIM","SWUM","SYNC","TACK","TACT","TAIL","TAIN","TAKE","TALE","TALK","TALL","TAME","TAMP","TANG","TANK","TAPE","TAPS","TARN","TASK","TAUT","TEAL","TEAM","TEAR","TECH","TEEM","TEEN","TEES","TELL","TEND","TENT","TERM","TERN","TEST","TEXT","THAN","THAT","THAW","THEE","THEM","THEN","THEY","THIN","THIS","THUD","THUG","TICK","TIDE","TIDY","TIER","TILE","TILL","TILT","TIME","TINA","TINE","TINT","TINY","TIRE","TOAD","TOGO","TOIL","TOLD","TOLL","TONE","TONG","TONY","TOOK","TOOL","TOOT","TORE","TORN","TORT","TOSS","TOUR","TOWN","TRAM","TRAP","TRAY","TREE","TREK","TRIM","TRIO","TRIP","TROD","TROT","TRUE","TUBA","TUBE","TUCK","TUFT","TUNA","TUNE","TUNG","TURF","TURN","TUSK","TWIG","TWIN","TWIT","TYPE","TYPO","UGLY","UNIT","UPON","URGE","USED","USER","UTES","VAIL","VAIN","VALE","VANE","VARY","VAST","VEAL","VEER","VEIL","VEIN","VEND","VENT","VERB","VERY","VETO","VICE","VIEW","VINE","VISE","VOID","VOLT","VOTE","WACK","WADE","WAGE","WAIL","WAIT","WAKE","WALK","WALL","WAND","WANE","WANG","WANT","WARD","WARM","WARN","WARP","WART","WASH","WASP","WATT","WAVE","WAYS","WEAK","WEAL","WEAN","WEAR","WEED","WEEK","WEIR","WELD","WELL","WELT","WENT","WEPT","WERE","WEST","WHAM","WHAT","WHEN","WHET","WHIM","WHIP","WHIR","WHIT","WHIZ","WHOA","WHOM","WICK","WIFE","WILD","WILL","WILT","WIND","WINE","WING","WINK","WINO","WIRE","WISE","WISH","WITH","WOLF","WOMB","WOOD","WOOL","WORD","WORE","WORK","WORM","WORN","WRAP","WRIT","YACK","YARD","YARN","YAWN","YAWP","YEAH","YEAR","YELL","YOGA","YOKE","YOLK","YOUR","ZERO","ZONE"
+    ];
+		const startWord = "FORK";
+		const endWord = "TUCK";
+		let currentWord = startWord;
+		let history = [startWord];
+
+		function isOneLetterDiff(word1, word2) {
+			let diff = 0;
+			for (let i = 0; i < word1.length; i++) {
+				if (word1[i] !== word2[i]) diff++;
+			}
+			return diff === 1;
+		}
+
+		function isValidWord(word) {
+			// Check if the word is in the 4-letter word list
+			return fourLetterWords.includes(word);
+		}
+
+		function renderTiles() {
+			const container = document.getElementById("currentWordTiles");
+			container.innerHTML = "";
+			for (let i = 0; i < currentWord.length; i++) {
+				const span = document.createElement("span");
+				span.className = "tile";
+				span.textContent = currentWord[i];
+				span.title = `Click or Tab to change letter ${i+1}`;
+				span.tabIndex = 0;
+				span.setAttribute('data-tile-idx', i);
+
+				function startEdit(prefill) {
+					if (currentWord === endWord) return;
+					const input = document.createElement("input");
+					input.type = "text";
+					input.maxLength = 1;
+					input.value = prefill && prefill.length === 1 && /[a-zA-Z]/.test(prefill) ? prefill.toUpperCase() : currentWord[i];
+					input.className = "tile-input";
+					input.style.width = "36px";
+					input.style.height = "36px";
+					input.style.fontSize = "1.5em";
+					input.style.textAlign = "center";
+					input.style.border = "2px solid #2980b9";
+					input.style.borderRadius = "6px";
+					input.style.outline = "none";
+					input.setAttribute('data-tile-idx', i);
+					span.replaceWith(input);
+					input.focus();
+					input.select();
+
+					function finishEdit(e) {
+						let newLetter = input.value.toUpperCase();
+						if (!newLetter.match(/^[A-Z]$/)) {
+							updateUI("Please enter a single letter.");
+							return;
+						}
+						if (newLetter === currentWord[i]) {
+							updateUI();
+							return;
+						}
+						const next = currentWord.substring(0, i) + newLetter + currentWord.substring(i+1);
+						if (!isValidWord(next)) {
+							updateUI("Not a valid word.");
+							return;
+						}
+						currentWord = next;
+						history.push(next);
+						updateUI();
+						if (currentWord === endWord) {
+							updateUI("Congratulations! You reached TUCK.");
+						}
+						// After editing, move focus to next/prev tile if tab/shift+tab, wrapping around
+						if (e && e.key === 'Tab') {
+							setTimeout(() => {
+								let nextIdx = i + (e.shiftKey ? -1 : 1);
+								if (nextIdx < 0) nextIdx = currentWord.length - 1;
+								if (nextIdx >= currentWord.length) nextIdx = 0;
+								const nextTile = document.querySelector(`.tile[data-tile-idx='${nextIdx}']`);
+								if (nextTile) nextTile.focus();
+							}, 0);
+						}
+					}
+
+					input.addEventListener("keydown", function(ev) {
+						if (ev.key === "Enter") {
+							finishEdit();
+						} else if (ev.key === "Escape") {
+							updateUI();
+						} else if (ev.key === "Tab") {
+							finishEdit(ev);
+							ev.preventDefault();
+						}
+					});
+					input.addEventListener("blur", finishEdit);
+				}
+
+				span.onclick = function() { startEdit(); };
+				span.addEventListener('keydown', function(ev) {
+					if (ev.key === 'Enter') {
+						startEdit();
+						ev.preventDefault();
+					} else if (ev.key.length === 1 && /[a-zA-Z]/.test(ev.key)) {
+						startEdit(ev.key);
+						ev.preventDefault();
+					} else if (ev.key === 'Tab') {
+						// Wrap focus on Tab/Shift+Tab
+						ev.preventDefault();
+						let idx = i + (ev.shiftKey ? -1 : 1);
+						if (idx < 0) idx = currentWord.length - 1;
+						if (idx >= currentWord.length) idx = 0;
+						const nextTile = document.querySelector(`.tile[data-tile-idx='${idx}']`);
+						if (nextTile) nextTile.focus();
+					}
+				});
+				container.appendChild(span);
+			}
+			// Optional: style for inline input
+			if (!document.getElementById('tile-input-style')) {
+				const style = document.createElement('style');
+				style.id = 'tile-input-style';
+				style.textContent = `.tile-input:focus { box-shadow: 0 0 4px #2980b9; }`;
+				document.head.appendChild(style);
+			}
+		}
+
+		function showConfetti() {
+			// Simple confetti effect using emoji
+			const confetti = document.createElement('div');
+			confetti.style.position = 'fixed';
+			confetti.style.left = 0;
+			confetti.style.top = 0;
+			confetti.style.width = '100vw';
+			confetti.style.height = '100vh';
+			confetti.style.pointerEvents = 'none';
+			confetti.style.zIndex = 9999;
+			for (let i = 0; i < 60; i++) {
+				const span = document.createElement('span');
+				span.textContent = ['🎉','✨','🎊','🥳','💚','⭐️'][Math.floor(Math.random()*6)];
+				span.style.position = 'absolute';
+				span.style.left = Math.random()*100 + 'vw';
+				span.style.top = '-2em';
+				span.style.fontSize = (Math.random()*1.5+1.2)+'em';
+				span.style.transition = 'top 1.5s cubic-bezier(.4,2,.6,1), opacity 0.5s';
+				confetti.appendChild(span);
+				setTimeout(()=>{
+					span.style.top = (Math.random()*80+10)+'vh';
+					span.style.opacity = 0;
+				}, 50);
+			}
+			document.body.appendChild(confetti);
+			setTimeout(()=>confetti.remove(), 1800);
+		}
+
+		function updateUI(message = "") {
+			renderTiles();
+			document.getElementById("history").innerHTML =
+				"Path: " + history.map(w => `<span class='word'>${w}</span>`).join("→");
+			const msgDiv = document.getElementById("message");
+			msgDiv.textContent = message;
+			msgDiv.classList.remove('win');
+			if (message && message.toLowerCase().includes('congrat')) {
+				msgDiv.classList.add('win');
+				// Show number of moves
+				const moves = history.length - 1;
+				msgDiv.textContent = message + ` You solved it in ${moves} move${moves === 1 ? '' : 's'}!`;
+				showConfetti();
+			}
+		}
+
+		// Hide form, use tiles instead
+		document.getElementById("moveForm").style.display = "none";
+		updateUI();
+	</script>
+</body>
+</html>
